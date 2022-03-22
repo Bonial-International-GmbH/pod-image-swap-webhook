@@ -1,6 +1,6 @@
 # pod-image-swap-webhook
 
-[![Build Status](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/build.yml/badge.svg)](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/build.yml)
+[![Build Status](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/ci.yml/badge.svg)](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/ci.yml)
 
 A mutating webhook that patches Pod container images based on configuration
 rules. For example, if you want to transparently proxy image pulls through an
