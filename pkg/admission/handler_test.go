@@ -19,7 +19,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-// TestPodImageMutator tests the admission handler end-to-end.
+// TestPodImageHandler tests the admission handler end-to-end.
 //
 // For each test case, it creates the handler as a standalone webhook using the
 // *config.Config from the test case and then calls the handler with an
@@ -27,8 +27,9 @@ import (
 //
 // Finally, it makes assertions about the result and patch operations returned
 // in the AdmissionReview response.
-func TestPodImageMutator(t *testing.T) {
+func TestPodImageHandler(t *testing.T) {
 	for _, testCase := range testCases {
+		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			webhookConfig := testCase.config
 			if webhookConfig == nil {
@@ -58,7 +59,7 @@ func TestPodImageMutator(t *testing.T) {
 				err = json.Unmarshal(resp.Patch, &patches)
 				require.NoError(t, err)
 
-				assert.Equal(t, testCase.expectedPatches, patches)
+				assert.ElementsMatch(t, testCase.expectedPatches, patches)
 			}
 		})
 	}

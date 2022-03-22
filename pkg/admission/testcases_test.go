@@ -68,4 +68,36 @@ var testCases = []testCase{
 			},
 		},
 	},
+	{
+		name: "does not replace images matching exclude rules",
+		config: &config.Config{
+			Exclude: []config.ExclusionRule{
+				{
+					Prefix: "someregistry.org/excluded-namespace",
+				},
+			},
+			Replace: []config.ReplacementRule{
+				{
+					Prefix:      "someregistry.org",
+					Replacement: "registry.example.com/someregistry.org",
+				},
+			},
+		},
+		pod: &corev1.Pod{
+			Spec: corev1.PodSpec{
+				Containers: []corev1.Container{
+					{Image: "someregistry.org/excluded-namespace/some-other-image:v1.0.0"},
+					{Image: "someregistry.org/some-namespace/some-image:latest"},
+				},
+			},
+		},
+		expectedCode: http.StatusOK,
+		expectedPatches: []jsonpatch.JsonPatchOperation{
+			{
+				Operation: "replace",
+				Path:      "/spec/containers/1/image",
+				Value:     "registry.example.com/someregistry.org/some-namespace/some-image:latest",
+			},
+		},
+	},
 }
