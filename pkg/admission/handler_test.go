@@ -46,9 +46,9 @@ func TestPodImageHandler(t *testing.T) {
 
 			rr := httptest.NewRecorder()
 
-			req := toRequest(t, testCase.pod)
+			req := buildAdmissionRequest(t, testCase.pod)
 			httpHandler.ServeHTTP(rr, req)
-			resp := toAdmissionResponse(t, rr.Body)
+			resp := parseAdmissionResponse(t, rr.Body)
 
 			assert.Contains(t, resp.Result.Message, testCase.expectedMessage)
 			assert.Equal(t, int32(testCase.expectedCode), resp.Result.Code)
@@ -65,7 +65,7 @@ func TestPodImageHandler(t *testing.T) {
 	}
 }
 
-func toRequest(t *testing.T, pod *corev1.Pod) *http.Request {
+func buildAdmissionRequest(t *testing.T, pod *corev1.Pod) *http.Request {
 	raw, err := json.Marshal(pod)
 	require.NoError(t, err)
 
@@ -88,7 +88,7 @@ func toRequest(t *testing.T, pod *corev1.Pod) *http.Request {
 	return req
 }
 
-func toAdmissionResponse(t *testing.T, r io.Reader) *admissionv1.AdmissionResponse {
+func parseAdmissionResponse(t *testing.T, r io.Reader) *admissionv1.AdmissionResponse {
 	var review admissionv1.AdmissionReview
 
 	err := json.NewDecoder(r).Decode(&review)
