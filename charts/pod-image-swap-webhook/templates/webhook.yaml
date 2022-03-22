@@ -1,0 +1,52 @@
+{{- $altNames := list ( printf "%s.%s" (include "pod-image-swap-webhook.name" .) .Release.Namespace ) ( printf "%s.%s.svc" (include "pod-image-swap-webhook.name" .) .Release.Namespace ) -}}
+{{- $ca := genCA "pod-image-swap-webhook-ca" 3650 -}}
+{{- $cert := genSignedCert ( include "pod-image-swap-webhook.name" . ) nil $altNames 3650 $ca -}}
+{{- $caBundle := $cert.Cert | b64enc -}}
+{{- $privateKey := $cert.Key | b64enc }}
+
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: {{ include "pod-image-swap-webhook.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "pod-image-swap-webhook.labels" . | nindent 4 }}
+data:
+  tls.crt: {{ $caBundle }}
+  tls.key: {{ $privateKey }}
+
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "pod-image-swap-webhook.fullname" . }}
+  labels:
+    {{- include "pod-image-swap-webhook.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+webhooks:
+- admissionReviewVersions:
+    - v1
+  name: {{ printf "%s.%s.svc" (include "pod-image-swap-webhook.name" .) .Release.Namespace }}
+  failurePolicy: {{ .Values.webhook.failurePolicy }}
+  sideEffects: None
+  clientConfig:
+    caBundle: {{ $caBundle | quote }}
+    service:
+      name: {{ include "pod-image-swap-webhook.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+      path: /mutate-v1-pod
+  rules:
+  - operations:
+    - CREATE
+    apiGroups:
+      - ""
+    apiVersions:
+      - v1
+    resources:
+      - pods
+{{- with .Values.webhook.namespaceSelector }}
+  namespaceSelector:
+    {{- toYaml . | nindent 4 }}
+{{- end }}

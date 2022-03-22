@@ -1,0 +1,90 @@
+# Default values for pod-image-swap-webhook.
+
+# Ignored if `hpa.create` is set to `true`.
+replicaCount: 2
+
+image:
+  repository: ghcr.io/bonial-international-gmbh/pod-image-swap-webhook
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created.
+  create: true
+  # Annotations to add to the service account.
+  annotations: {}
+  # The name of the service account to use. If not set and create is true, a
+  # name is generated using the fullname template.
+  name: ""
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 65534
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 65534
+
+resources: {}
+  # limits:
+  #   memory: 20Mi
+  # requests:
+  #   cpu: 10m
+  #   memory: 20Mi
+
+hpa:
+  create: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  create: true
+  minAvailable: 1
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+webhook:
+  failurePolicy: Ignore
+  # namespaceSelector: {}
+
+webhookConfig: {}
+  # # Exclusion rules: image prefixes that are not replaced. This is useful if you
+  # # want to replace all images from a whole registry, except for some specific
+  # # prefixes within this registry.
+  # exclude:
+  #   - prefix: k8s.gcr.io/ingress-nginx/controller
+  # # Replacement rules: these define an image prefix and a replacement for it.
+  # # Images from dockerhub are expanded to their fully qualified image name before
+  # # the rules are applied.
+  # #
+  # # For example:
+  # #
+  # # - the unnamespaced image `nginx:latest` gets expanded to
+  # #   `docker.io/library/nginx:latest`
+  # # - the namespaced image `goharbor/harbor-core:v2.4.2` gets expanded to
+  # #   `docker.io/goharbor/harbor-core:v2.4.2`
+  # replace:
+  #   - prefix: quay.io
+  #     replacement: registry.example.org/quay.io
+  #   - prefix: k8s.gcr.io
+  #     replacement: registry.example.org/k8s.gcr.io
+  #   - prefix: docker.io
+  #     replacement: registry.example.org/docker.io
