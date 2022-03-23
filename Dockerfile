@@ -19,7 +19,7 @@ RUN make build
 
 FROM alpine:3.15
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk --update --no-cache add ca-certificates
 
 COPY --from=builder /src/pod-image-swap-webhook /pod-image-swap-webhook
 
