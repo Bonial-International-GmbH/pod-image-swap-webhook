@@ -31,7 +31,7 @@ jobs:
       - name: Scan image
         uses: azure/container-scan@v0
         with:
-          image-name: $IMAGE_NAME
+          image-name: ${{ env.IMAGE_NAME }}
 
       - name: Login to ghcr.io
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
