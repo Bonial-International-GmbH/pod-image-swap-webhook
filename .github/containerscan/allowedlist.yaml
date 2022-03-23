@@ -1,0 +1,6 @@
+---
+general:
+  vulnerabilities:
+    # libretls vulnerability in alpine:3.15.1, currently there is no newer
+    # alpine tag.
+    - CVE-2022-0778
