@@ -23,4 +23,6 @@ RUN apk --update --no-cache add ca-certificates
 
 COPY --from=builder /src/pod-image-swap-webhook /pod-image-swap-webhook
 
+USER nobody
+
 ENTRYPOINT ["/pod-image-swap-webhook"]
