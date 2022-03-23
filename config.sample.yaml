@@ -1,0 +1,23 @@
+---
+# Exclusion rules: image prefixes that are not replaced. This is useful if you
+# want to replace all images from a whole registry, except for some specific
+# prefixes within this registry.
+exclude:
+  - prefix: k8s.gcr.io/ingress-nginx/controller
+# Replacement rules: these define an image prefix and a replacement for it.
+# Images from dockerhub are expanded to their fully qualified image name before
+# the rules are applied.
+#
+# For example:
+#
+# - the unnamespaced image `nginx:latest` gets expanded to
+#   `docker.io/library/nginx:latest`
+# - the namespaced image `goharbor/harbor-core:v2.4.2` gets expanded to
+#   `docker.io/goharbor/harbor-core:v2.4.2`
+replace:
+  - prefix: quay.io
+    replacement: registry.example.org/quay.io
+  - prefix: k8s.gcr.io
+    replacement: registry.example.org/k8s.gcr.io
+  - prefix: docker.io
+    replacement: registry.example.org/docker.io
