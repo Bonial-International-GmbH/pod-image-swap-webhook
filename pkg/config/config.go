@@ -2,6 +2,8 @@
 package config
 
 import (
+	"errors"
+	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -44,5 +46,48 @@ func Load(path string) (*Config, error) {
 		return nil, err
 	}
 
+	if err := config.Validate(); err != nil {
+		return nil, fmt.Errorf("config validation failed: %w", err)
+	}
+
 	return &config, nil
+}
+
+// Validate validates the configuration.
+func (c *Config) Validate() error {
+	for i, rule := range c.Exclude {
+		if err := rule.Validate(); err != nil {
+			return fmt.Errorf("invalid exclusion rule #%d: %w", i, err)
+		}
+	}
+
+	for i, rule := range c.Replace {
+		if err := rule.Validate(); err != nil {
+			return fmt.Errorf("invalid replacement rule #%d: %w", i, err)
+		}
+	}
+
+	return nil
+}
+
+// Validate validates the exclusion rule.
+func (r *ExclusionRule) Validate() error {
+	if r.Prefix == "" {
+		return errors.New("prefix must not be empty")
+	}
+
+	return nil
+}
+
+// Validate validates the replacement rule.
+func (r *ReplacementRule) Validate() error {
+	if r.Prefix == "" {
+		return errors.New("prefix must not be empty")
+	}
+
+	if r.Replacement == "" {
+		return errors.New("replacement must not be empty")
+	}
+
+	return nil
 }
