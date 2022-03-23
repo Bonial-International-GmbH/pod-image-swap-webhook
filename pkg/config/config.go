@@ -2,7 +2,6 @@
 package config
 
 import (
-	"io"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -34,12 +33,7 @@ type ReplacementRule struct {
 func Load(path string) (*Config, error) {
 	logger.V(1).Info("loading configuration", "path", path)
 
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	buf, err := io.ReadAll(file)
+	buf, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
