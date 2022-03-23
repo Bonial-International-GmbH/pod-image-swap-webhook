@@ -34,7 +34,11 @@ func main() {
 
 	logger.Info("loaded config", "config", webhookConfig)
 
-	mgrOptions := manager.Options{CertDir: os.Getenv("PISW_CERT_DIR")}
+	mgrOptions := manager.Options{
+		CertDir:                os.Getenv("PISW_CERT_DIR"),
+		MetricsBindAddress:     ":8080",
+		HealthProbeBindAddress: ":8081",
+	}
 
 	logger.Info("setting up manager")
 	mgr, err := manager.New(clientconfig.GetConfigOrDie(), mgrOptions)
