@@ -55,6 +55,18 @@ func main() {
 	logger.Info("registering webhooks to the webhook server")
 	hookServer.Register("/mutate-v1-pod", &webhook.Admission{Handler: handler})
 
+	err = mgr.AddReadyzCheck("webhook", hookServer.StartedChecker())
+	if err != nil {
+		logger.Error(err, "failed to set up readiness probe")
+		os.Exit(1)
+	}
+
+	err = mgr.AddHealthzCheck("webhook", hookServer.StartedChecker())
+	if err != nil {
+		logger.Error(err, "failed to set up liveness probe")
+		os.Exit(1)
+	}
+
 	logger.Info("starting manager")
 	if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
 		logger.Error(err, "unable to run manager")
