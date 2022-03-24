@@ -1,0 +1,21 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pod-image-swap-webhook
+  description: |
+    A mutating webhook that patches Pod container images
+    based on configuration rules.
+  annotations:
+    backstage.io/techdocs-ref: dir:..
+  tags:
+    - admission
+    - go
+    - helm
+    - image
+    - kubernetes
+    - webhook
+spec:
+  type: service
+  owner: ops
+  lifecycle: experimental
