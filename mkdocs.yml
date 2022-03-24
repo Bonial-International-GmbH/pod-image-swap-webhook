@@ -1,0 +1,2 @@
+site_name: pod-image-swap-webhook
+site_description: 'A mutating webhook that patches Pod container images based on configuration rules.'
