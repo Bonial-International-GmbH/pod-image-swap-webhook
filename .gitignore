@@ -1,3 +1,5 @@
+/certs
 /config.yaml
 /coverage.txt
 /pod-image-swap-webhook
+/values.yaml
