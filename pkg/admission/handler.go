@@ -100,7 +100,7 @@ func (h *PodImageHandler) patchContainer(container corev1.Container) corev1.Cont
 }
 
 // normalizeImage normalizes images from dockerhub to their long form.
-// Dockerhub images without namespace are prefixed with `docker.io/libary`,
+// Dockerhub images without namespace are prefixed with `docker.io/library`,
 // namespaced images are prefixed with `docker.io/`. Images that already start
 // with `docker.io/` or any other registry domain are left untouched.
 //
