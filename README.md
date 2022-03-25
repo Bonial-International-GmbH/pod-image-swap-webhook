@@ -39,6 +39,7 @@ replacement configuration, for example:
 webhookConfig:
   exclude:
     - prefix: k8s.gcr.io/ingress-nginx/controller
+    - regexp: ^quay\.io/.*prometheus.*$
   replace:
     - prefix: quay.io
       replacement: registry.example.org/quay.io
@@ -46,6 +47,8 @@ webhookConfig:
       replacement: registry.example.org/k8s.gcr.io
     - prefix: docker.io
       replacement: registry.example.org/docker.io
+    - regexp: ^.*busybox(:(?P<tag>.+))?$
+      replacement: registry.example.org/library/busybox:1.35
 ```
 
 You can find documentation for all available `webhookConfig` fields in

@@ -77,20 +77,23 @@ func (h *PodImageHandler) patchContainers(containers []corev1.Container) []corev
 func (h *PodImageHandler) patchContainer(container corev1.Container) corev1.Container {
 	image := normalizeImage(container.Image)
 
-	for _, rule := range h.config.Exclude {
-		if strings.HasPrefix(image, rule.Prefix) {
-			logger.Info("image excluded from replacement via config, not patching", "image", image)
+	for i, rule := range h.config.Exclude {
+		if rule.MatchImage(image) {
+			logger.Info("image excluded from replacement via config, not patching",
+				"image", container.Image, "rule_id", i)
 
 			return container
 		}
 	}
 
-	for _, rule := range h.config.Replace {
-		if strings.HasPrefix(image, rule.Prefix) {
-			replacedImage := strings.Replace(image, rule.Prefix, rule.Replacement, 1)
-			container.Image = replacedImage
+	for i, rule := range h.config.Replace {
+		replacement := rule.ReplaceImage(image, rule.Replacement)
 
-			logger.Info("patching container image", "from", image, "to", replacedImage)
+		if replacement != image {
+			logger.Info("patching container image",
+				"original", container.Image, "replacement", replacement, "rule_id", i)
+
+			container.Image = replacement
 
 			return container
 		}
