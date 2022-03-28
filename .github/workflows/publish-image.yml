@@ -8,12 +8,9 @@ on:
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
-  # Publish PR images.
-  pull_request:
 
 env:
   IMAGE_NAME: pod-image-swap-webhook
-  PR_NUMBER: ${{ github.event.number }}
 
 jobs:
   publish-image:
@@ -46,12 +43,9 @@ jobs:
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          # Use Docker `latest` tag convention or `pr-{number}` for pull
-          # requests
+          # Use Docker `latest` tag convention for `main` branch 
           if [ "$VERSION" == "main" ]; then
             VERSION=latest
-          elif [ -n "$PR_NUMBER" ]; then
-            VERSION="pr-${PR_NUMBER}"
           fi
 
           echo IMAGE_ID=$IMAGE_ID
