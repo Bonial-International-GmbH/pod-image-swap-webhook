@@ -110,14 +110,14 @@ func (h *PodImageHandler) patchContainer(container corev1.Container) corev1.Cont
 //   goharbor/harbor-core:v2.4.2 => docker.io/goharbor/harbor-core:v2.4.2
 func normalizeImage(image string) string {
 	parts := strings.Split(image, "/")
-	if strings.Contains(parts[0], ".") {
-		// Image starts with a registry domain, no normalization needed.
-		return image
-	}
-
 	if len(parts) == 1 {
 		// Image without namespace from dockerhub.
 		return fmt.Sprintf("docker.io/library/%s", parts[0])
+	}
+
+	if strings.Contains(parts[0], ".") {
+		// Image starts with a registry domain, no normalization needed.
+		return image
 	}
 
 	// Namespaced image from dockerhub.

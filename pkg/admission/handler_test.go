@@ -104,4 +104,5 @@ func TestNormalizeImage(t *testing.T) {
 	assert.Equal(t, "docker.io/goharbor/harbor-core:v2.4.2", normalizeImage("goharbor/harbor-core:v2.4.2"))
 	assert.Equal(t, "docker.io/goharbor/harbor-core:v2.4.2", normalizeImage("docker.io/goharbor/harbor-core:v2.4.2"))
 	assert.Equal(t, "k8s.gcr.io/ingress-nginx/controller:v0.48.1", normalizeImage("k8s.gcr.io/ingress-nginx/controller:v0.48.1"))
+	assert.Equal(t, "docker.io/library/docker:20.10.12-dind-alpine3.15", normalizeImage("docker:20.10.12-dind-alpine3.15"))
 }
