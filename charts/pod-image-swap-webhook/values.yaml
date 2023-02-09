@@ -59,6 +59,8 @@ podDisruptionBudget:
   create: true
   minAvailable: 1
 
+priorityClassName: ""
+
 nodeSelector: {}
 
 tolerations: []

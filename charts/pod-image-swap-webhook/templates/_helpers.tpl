@@ -130,6 +130,9 @@ spec:
     - secret:
         secretName: {{ include "pod-image-swap-webhook.fullname" . }}
       name: certs
+  {{- with .Values.priorityClassName }}
+  priorityClassName: {{ . }}
+  {{- end }}
   {{- with .Values.nodeSelector }}
   nodeSelector:
     {{- toYaml . | nindent 4 }}
