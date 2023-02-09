@@ -1,6 +1,9 @@
 # Default values for pod-image-swap-webhook.
 
-# Ignored if `hpa.create` is set to `true`.
+# Valid values are `Deployment` and `DaemonSet`.
+kind: Deployment
+
+# Ignored if `hpa.create` is set to `true` or if `kind` is `DaemonSet`.
 replicaCount: 2
 
 image:
@@ -45,6 +48,7 @@ resources: {}
   #   memory: 20Mi
 
 hpa:
+  # Ignored if `kind` is `DaemonSet`.
   create: true
   minReplicas: 2
   maxReplicas: 6
