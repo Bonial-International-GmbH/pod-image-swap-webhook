@@ -3,6 +3,16 @@ entries:
   pod-image-swap-webhook:
   - apiVersion: v2
     appVersion: v0.0.3
+    created: "2023-02-09T10:26:00.018096156Z"
+    description: A webhook that replaces Pod images based on configuration values.
+    digest: 8cddb552bfd65763258fe9ea43ec6daeb9b8406b4673e376aade52237b611d29
+    name: pod-image-swap-webhook
+    type: application
+    urls:
+    - https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/releases/download/pod-image-swap-webhook-0.1.0/pod-image-swap-webhook-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: v0.0.3
     created: "2022-05-12T06:26:04.624151462Z"
     description: A webhook that replaces Pod images based on configuration values.
     digest: 2e05956dbe0c10102915c42a288fb3e3b30c1c9b5e71bc99b992345b2339fc4b
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/releases/download/pod-image-swap-webhook-0.0.1/pod-image-swap-webhook-0.0.1.tgz
     version: 0.0.1
-generated: "2022-05-12T06:26:04.624271563Z"
+generated: "2023-02-09T10:26:00.018118657Z"
