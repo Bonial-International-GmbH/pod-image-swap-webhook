@@ -1,15 +1,12 @@
-{{- if eq .Values.kind "Deployment" -}}
+{{- if eq .Values.kind "DaemonSet" -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: {{ include "pod-image-swap-webhook.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "pod-image-swap-webhook.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.hpa.create }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "pod-image-swap-webhook.selectorLabels" . | nindent 6 }}

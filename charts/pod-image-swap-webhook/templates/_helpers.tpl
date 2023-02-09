@@ -60,3 +60,86 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+The pod template used by the Deployment and DaemonSet resources 
+*/}}
+{{- define "pod-image-swap-webhook.podTemplate" -}}
+metadata:
+  {{- with .Values.podAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    # Revision forces recreation of pods on upgrade.
+    # Required to refresh the server certificate and key.
+    revision: {{ .Release.Revision | quote }}
+    {{- include "pod-image-swap-webhook.selectorLabels" . | nindent 4 }}
+  {{- with .Values.podLabels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  serviceAccountName: {{ include "pod-image-swap-webhook.serviceAccountName" . }}
+  securityContext:
+    {{- toYaml .Values.podSecurityContext | nindent 4 }}
+  containers:
+    - name: {{ .Chart.Name }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      env:
+        - name: PISW_CONFIG_PATH
+          value: /config/config.yaml
+        - name: PISW_CERT_DIR
+          value: /certs
+      ports:
+        - name: metrics
+          containerPort: 8080
+          protocol: TCP
+        - name: healthz
+          containerPort: 8081
+          protocol: TCP
+        - name: webhook
+          containerPort: 9443
+          protocol: TCP
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: healthz
+      readinessProbe:
+        httpGet:
+          path: /readyz
+          port: healthz
+      resources:
+        {{- toYaml .Values.resources | nindent 8 }}
+      volumeMounts:
+        - name: config
+          mountPath: /config/config.yaml
+          subPath: config.yaml
+        - name: certs
+          mountPath: /certs
+  volumes:
+    - configMap:
+        name: {{ include "pod-image-swap-webhook.fullname" . }}
+      name: config
+    - secret:
+        secretName: {{ include "pod-image-swap-webhook.fullname" . }}
+      name: certs
+  {{- with .Values.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
