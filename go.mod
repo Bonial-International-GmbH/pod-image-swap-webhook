@@ -7,7 +7,7 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.3.0
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.26.3
-	k8s.io/apimachinery v0.27.2
+	k8s.io/apimachinery v0.27.3
 	sigs.k8s.io/controller-runtime v0.14.6
 )
 
