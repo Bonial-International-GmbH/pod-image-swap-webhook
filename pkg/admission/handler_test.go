@@ -36,7 +36,7 @@ func TestPodImageHandler(t *testing.T) {
 				webhookConfig = &config.Config{}
 			}
 
-			handler := NewPodImageHandler(webhookConfig)
+			handler := NewPodImageHandler(webhookConfig, runtime.NewScheme())
 
 			httpHandler, err := admission.StandaloneWebhook(
 				&admission.Webhook{Handler: handler},

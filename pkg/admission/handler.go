@@ -10,6 +10,7 @@ import (
 	"github.com/Bonial-International-GmbH/pod-image-swap-webhook/pkg/config"
 
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
@@ -25,9 +26,10 @@ type PodImageHandler struct {
 
 // NewPodImageHandler creates a new *PodImageHandler which mutates Pod
 // container images according to the provided configuration.
-func NewPodImageHandler(config *config.Config) *PodImageHandler {
+func NewPodImageHandler(config *config.Config, scheme *runtime.Scheme) *PodImageHandler {
 	return &PodImageHandler{
-		config: config,
+		config:  config,
+		decoder: admission.NewDecoder(scheme),
 	}
 }
 
@@ -49,12 +51,6 @@ func (h *PodImageHandler) Handle(ctx context.Context, req admission.Request) adm
 	}
 
 	return admission.PatchResponseFromRaw(req.Object.Raw, marshaledPod)
-}
-
-// InjectDecoder implements admission.DecoderInjector.
-func (h *PodImageHandler) InjectDecoder(d *admission.Decoder) error {
-	h.decoder = d
-	return nil
 }
 
 func (h *PodImageHandler) patchPod(pod corev1.Pod) corev1.Pod {
@@ -106,8 +102,8 @@ func (h *PodImageHandler) patchContainer(container corev1.Container) corev1.Cont
 //
 // Examples:
 //
-//   nginx:latest => docker.io/library/nginx:latest
-//   goharbor/harbor-core:v2.4.2 => docker.io/goharbor/harbor-core:v2.4.2
+//	nginx:latest => docker.io/library/nginx:latest
+//	goharbor/harbor-core:v2.4.2 => docker.io/goharbor/harbor-core:v2.4.2
 func normalizeImage(image string) string {
 	parts := strings.Split(image, "/")
 	if len(parts) == 1 {

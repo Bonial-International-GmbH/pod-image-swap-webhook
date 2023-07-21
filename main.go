@@ -50,7 +50,7 @@ func main() {
 	logger.Info("setting up webhook server")
 	hookServer := mgr.GetWebhookServer()
 
-	handler := admission.NewPodImageHandler(webhookConfig)
+	handler := admission.NewPodImageHandler(webhookConfig, mgr.GetScheme())
 
 	logger.Info("registering webhooks to the webhook server")
 	hookServer.Register("/mutate-v1-pod", &webhook.Admission{Handler: handler})
