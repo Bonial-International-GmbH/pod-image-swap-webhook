@@ -11,6 +11,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/manager/signals"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 )
 
@@ -34,10 +35,16 @@ func main() {
 
 	logger.Info("loaded config", "config", webhookConfig)
 
+	webhookServer := webhook.NewServer(webhook.Options{
+		CertDir: os.Getenv("PISW_CERT_DIR"),
+	})
+
+	metricsOptions := metricsserver.Options{BindAddress: ":8080"}
+
 	mgrOptions := manager.Options{
-		CertDir:                os.Getenv("PISW_CERT_DIR"),
-		MetricsBindAddress:     ":8080",
 		HealthProbeBindAddress: ":8081",
+		WebhookServer:          webhookServer,
+		Metrics:                metricsOptions,
 	}
 
 	logger.Info("setting up manager")
