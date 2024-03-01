@@ -42,7 +42,7 @@ jobs:
         run: make vet
 
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3.7.0
+        uses: golangci/golangci-lint-action@v4.0.0
         with:
           version: latest
           skip-pkg-cache: true
