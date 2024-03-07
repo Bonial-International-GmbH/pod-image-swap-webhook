@@ -1,0 +1,5 @@
+misconfigurations:
+  - id: AVD-DS-0026
+    statement: The HEALTHCHECK instruction is meaningless in a Kubernetes context.
+  - id: AVD-KSV-0011
+    statement: Configuring Kubernetes CPU limits is considered bad practice.

@@ -1,6 +1,6 @@
 ---
 name: publish-image
-on:   
+on:
   push:
     # Publish `main` as Docker `latest` image.
     branches:
@@ -34,25 +34,25 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Format Tag
         id: formatTag
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID="ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME"
 
           # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(echo "$IMAGE_ID" | tr '[:upper:]' '[:lower:]')
 
           # Strip git ref prefix from version
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          # Use Docker `latest` tag convention for `main` branch 
+          # Use Docker `latest` tag convention for `main` branch
           if [ "$VERSION" == "main" ]; then
             VERSION=latest
           fi
 
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
+          echo IMAGE_ID="$IMAGE_ID"
+          echo VERSION="$VERSION"
 
           echo "TAG=$IMAGE_ID:$VERSION" >> "$GITHUB_OUTPUT"
 
@@ -63,8 +63,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.formatTag.outputs.TAG }}
-
-      - name: Scan image
-        uses: azure/container-scan@v0
-        with:
-          image-name: ${{ env.IMAGE_NAME }}

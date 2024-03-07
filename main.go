@@ -1,3 +1,5 @@
+// Package main provides the entrypoint for the pod-image-swap-webhook
+// executable.
 package main
 
 import (

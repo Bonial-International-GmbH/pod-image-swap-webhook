@@ -49,8 +49,8 @@ webhookConfig:
 ```
 
 You can find documentation for all available `webhookConfig` fields in
-[`config.sample.yaml`](config.sample.yaml). For more helm configuration options
-have a look into the [`values.yaml`
+[`config.sample.yaml`](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/blob/main/config.sample.yaml).
+For more helm configuration options have a look into the [`values.yaml`
 defaults](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/blob/main/charts/pod-image-swap-webhook/values.yaml).
 
 Finally use helm to install the webhook:

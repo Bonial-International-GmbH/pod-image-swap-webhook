@@ -3,9 +3,9 @@ name: ci
 on:
   push:
     branches:
-      - 'main'
+      - "main"
     tags:
-      - 'v*'
+      - "v*"
   pull_request:
 
 jobs:
@@ -40,10 +40,3 @@ jobs:
 
       - name: Run go vet
         run: make vet
-
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v4.0.0
-        with:
-          version: latest
-          skip-pkg-cache: true
-          skip-build-cache: true

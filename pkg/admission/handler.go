@@ -1,3 +1,5 @@
+// Package admission provides an admission handler that swaps pod images based
+// on a configuration.
 package admission
 
 import (
@@ -34,7 +36,7 @@ func NewPodImageHandler(config *config.Config, scheme *runtime.Scheme) *PodImage
 }
 
 // Handle implements admission.Handler.
-func (h *PodImageHandler) Handle(ctx context.Context, req admission.Request) admission.Response {
+func (h *PodImageHandler) Handle(_ context.Context, req admission.Request) admission.Response {
 	var pod corev1.Pod
 
 	err := h.decoder.Decode(req, &pod)
