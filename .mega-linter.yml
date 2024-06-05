@@ -5,5 +5,4 @@ DISABLE:
 DISABLE_LINTERS:
   - REPOSITORY_CHECKOV # It's annoyed by the helm chart in charts/
 GO_GOLANGCI_LINT_ARGUMENTS: --timeout=5m
-GO_GOLANGCI_LINT_CLI_LINT_MODE: project
 REPOSITORY_TRIVY_ARGUMENTS: --ignorefile .trivyignore.yaml
