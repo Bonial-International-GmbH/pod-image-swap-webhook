@@ -27,6 +27,7 @@ jobs:
       - name: MegaLinter
         uses: oxsecurity/megalinter/flavors/go@v7
         env:
+          GOTOOLCHAIN: auto
           VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
