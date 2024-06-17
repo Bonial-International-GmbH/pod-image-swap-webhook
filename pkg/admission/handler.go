@@ -23,7 +23,7 @@ var logger = log.Log.WithName("admission")
 // based on replacement rules.
 type PodImageHandler struct {
 	config  *config.Config
-	decoder *admission.Decoder
+	decoder admission.Decoder
 }
 
 // NewPodImageHandler creates a new *PodImageHandler which mutates Pod
