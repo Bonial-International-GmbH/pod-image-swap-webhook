@@ -4,6 +4,7 @@
 # prefixes within this registry.
 exclude:
   - prefix: k8s.gcr.io/ingress-nginx/controller
+  - regexp: ^quay\.io/.*prometheus.*$
 # Replacement rules: these define an image prefix and a replacement for it.
 # Images from dockerhub are expanded to their fully qualified image name before
 # the rules are applied.
@@ -21,3 +22,5 @@ replace:
     replacement: registry.example.org/k8s.gcr.io
   - prefix: docker.io
     replacement: registry.example.org/docker.io
+  - regexp: ^.*busybox(:(?P<tag>.+))?$
+    replacement: registry.example.org/library/busybox:1.35
