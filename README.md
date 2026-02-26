@@ -1,5 +1,9 @@
 # pod-image-swap-webhook
 
+> **⚠️ REPOSITORY MOVED**
+>
+> This repository is now archived because the code has been moved to [https://github.com/bonial-oss/pod-image-swap-webhook](https://github.com/bonial-oss/pod-image-swap-webhook)
+
 [![Build Status](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/ci.yml/badge.svg)](https://github.com/Bonial-International-GmbH/pod-image-swap-webhook/actions/workflows/ci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Bonial-International-GmbH/pod-image-swap-webhook)](https://goreportcard.com/report/github.com/Bonial-International-GmbH/pod-image-swap-webhook)
 ![License](https://img.shields.io/github/license/Bonial-International-GmbH/pod-image-swap-webhook)
