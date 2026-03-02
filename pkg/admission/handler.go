@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Bonial-International-GmbH/pod-image-swap-webhook/pkg/config"
+	"github.com/bonial-oss/pod-image-swap-webhook/pkg/config"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"

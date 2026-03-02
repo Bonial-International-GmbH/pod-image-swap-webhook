@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Bonial-International-GmbH/pod-image-swap-webhook/pkg/config"
+	"github.com/bonial-oss/pod-image-swap-webhook/pkg/config"
 	"gomodules.xyz/jsonpatch/v2"
 	admissionv1 "k8s.io/api/admission/v1"
 	corev1 "k8s.io/api/core/v1"

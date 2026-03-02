@@ -5,8 +5,8 @@ package main
 import (
 	"os"
 
-	"github.com/Bonial-International-GmbH/pod-image-swap-webhook/pkg/admission"
-	"github.com/Bonial-International-GmbH/pod-image-swap-webhook/pkg/config"
+	"github.com/bonial-oss/pod-image-swap-webhook/pkg/admission"
+	"github.com/bonial-oss/pod-image-swap-webhook/pkg/config"
 
 	clientconfig "sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/log"

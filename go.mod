@@ -1,4 +1,4 @@
-module github.com/Bonial-International-GmbH/pod-image-swap-webhook
+module github.com/bonial-oss/pod-image-swap-webhook
 
 go 1.25.0
 
