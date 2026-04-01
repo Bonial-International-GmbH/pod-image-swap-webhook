@@ -39,7 +39,7 @@ var testCases = []testCase{
 		config: &config.Config{
 			Replace: []config.ReplacementRule{
 				{
-					Prefix:      "docker.io",
+					Pattern:     config.Pattern{Prefix: "docker.io"},
 					Replacement: "registry.example.com/docker.io",
 				},
 			},
@@ -73,12 +73,44 @@ var testCases = []testCase{
 		config: &config.Config{
 			Exclude: []config.ExclusionRule{
 				{
-					Prefix: "someregistry.org/excluded-namespace",
+					Pattern: config.Pattern{Prefix: "someregistry.org/excluded-namespace"},
 				},
 			},
 			Replace: []config.ReplacementRule{
 				{
-					Prefix:      "someregistry.org",
+					Pattern:     config.Pattern{Prefix: "someregistry.org"},
+					Replacement: "registry.example.com/someregistry.org",
+				},
+			},
+		},
+		pod: &corev1.Pod{
+			Spec: corev1.PodSpec{
+				Containers: []corev1.Container{
+					{Image: "someregistry.org/excluded-namespace/some-other-image:v1.0.0"},
+					{Image: "someregistry.org/some-namespace/some-image:latest"},
+				},
+			},
+		},
+		expectedCode: http.StatusOK,
+		expectedPatches: []jsonpatch.JsonPatchOperation{
+			{
+				Operation: "replace",
+				Path:      "/spec/containers/1/image",
+				Value:     "registry.example.com/someregistry.org/some-namespace/some-image:latest",
+			},
+		},
+	},
+	{
+		name: "does not replace images matching exclude rules, regexp",
+		config: &config.Config{
+			Exclude: []config.ExclusionRule{
+				{
+					Pattern: config.Pattern{Regexp: config.MustCompileRegexp(".*excluded-namespace.*")},
+				},
+			},
+			Replace: []config.ReplacementRule{
+				{
+					Pattern:     config.Pattern{Prefix: "someregistry.org"},
 					Replacement: "registry.example.com/someregistry.org",
 				},
 			},
